@@ -1,0 +1,13 @@
+@layout('layouts/main')
+
+@section('content')
+<h1>Nuevo usuario</h1>
+<form action="{{ route('user.store') }}" method="POST">
+  {{ csrfField() }}
+
+  @include('user/_form')
+
+  <button type="submit" class="btn btn-primary">Guardar</button>
+  <a href="{{ route('user.index') }}" class="btn btn-link">Cancelar</a>
+</form>
+@endsection

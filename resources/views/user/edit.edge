@@ -1,0 +1,14 @@
+@layout('layouts/main')
+
+@section('content')
+<h1>Edicion de usuario</h1>
+<form action="{{ route('user.update', {'id': user.id}) }}?_method=PUT" method="POST">
+  {{ csrfField() }}
+
+  @include('user/_form')
+
+  <button type="submit" class="btn btn-primary">Guardar</button>
+  <a href="{{ route('user.index') }}" class="btn btn-link">Cancelar</a>
+</form>
+
+@endsection
