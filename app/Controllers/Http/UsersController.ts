@@ -10,9 +10,13 @@ enum Message {
 
 export default class UsersController {
 
-  public async index({ view }: HttpContextContract) {
-    const users = await User.query().orderBy('username', 'asc')
-    return view.render('user/index', { users })
+  public async index({ request, view }: HttpContextContract) {
+    const page = request.get().page || 1
+    const pagination = await User.query()
+      .orderBy('username', 'asc')
+      .paginate(page, 10)
+    const users = pagination.all()
+    return view.render('user/index', { users, pagination: pagination.getMeta() })
   }
 
   public async create({ view }: HttpContextContract) {
