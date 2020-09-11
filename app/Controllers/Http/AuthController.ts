@@ -8,7 +8,7 @@ class UserCreateValidator {
 
   public schema = schema.create({
     username: schema.string({ trim: true }, [
-      rules.alpha(),
+      // rules.alpha(),
       rules.maxLength(40),
       rules.unique({ table: 'users', column: 'username' }),
     ]),
