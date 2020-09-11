@@ -5,9 +5,57 @@
 <form action="{{ route('user.store') }}" method="POST">
   {{ csrfField() }}
 
-  @include('user/_form')
+  <div class="form-group">
+    <label>Usuario</label>
+    <input type="text" class="form-control" name="username" value="{{ flashMessages.has('username') ? flashMessages.get('username') : user? user.username : ''}}">
+    @if(flashMessages.has('errors.username'))
+    <small class="form-text text-muted">
+      {{ flashMessages.get('errors.username') }}
+    </small>
+    @endif
+  </div>
+
+  <div class="form-group">
+    <label>Correo</label>
+    <input type="text" class="form-control" name="email" value="{{ flashMessages.has('email') ? flashMessages.get('email') : user? user.email : ''}}">
+    @if(flashMessages.has('errors.email'))
+    <small class="form-text text-muted">
+      {{ flashMessages.get('errors.email') }}
+    </small>
+    @endif
+  </div>
+
+  <div class="form-group">
+    <label>Password</label>
+    <input type="text" class="form-control" name="password" value="{{ flashMessages.has('password') ? flashMessages.get('password') : ''}}">
+    @if(flashMessages.has('errors.password'))
+    <small class="form-text text-muted">
+      {{ flashMessages.get('errors.password') }}
+    </small>
+    @endif
+  </div>
+
+  <div class="form-group">
+    <label>Fecha nacimiento</label>
+    <input type="text" class="form-control" name="birth" value="{{ flashMessages.has('birth') ? flashMessages.get('birth') : user? date(user.birth) : ''}}">
+    @if(flashMessages.has('errors.birth'))
+    <small class="form-text text-muted">
+      {{ flashMessages.get('errors.birth') }}
+    </small>
+    @endif
+  </div>
+
+  <div class="form-group">
+    <div class="custom-control custom-checkbox">
+      <input id="my-input" class="custom-control-input" type="checkbox" name="active" value="true" {{ (user && user.active) ? 'checked': ''}} >
+      <label for="my-input" class="custom-control-label">Recibe notificaciones</label>
+    </div>
+  </div>
 
   <button type="submit" class="btn btn-primary">Guardar</button>
   <a href="{{ route('user.index') }}" class="btn btn-link">Cancelar</a>
 </form>
+
+{{ inspect(flashMessages) }}
+
 @endsection

@@ -1,5 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
+import UserCreateValidator from 'App/Validators/UserCreateValidator'
 
 enum Message {
   'NOT_FOUND' = 'Elemento no encontrado',
@@ -10,22 +11,25 @@ enum Message {
 
 export default class UsersController {
 
-  public async index({ view }: HttpContextContract) {
-    const users = await User.query().orderBy('username', 'asc')
-    return view.render('user/index', { users })
+  public async index({ request, view }: HttpContextContract) {
+    const page = request.get().page || 1
+    const pagination = await User.query()
+      .orderBy('username', 'asc')
+      .paginate(page, 10)
+    const users = pagination.all()
+    return view.render('user/index', { users, pagination: pagination.getMeta() })
   }
 
   public async create({ view }: HttpContextContract) {
     return view.render('user/create')
   }
 
-  public async store({ response, session }: HttpContextContract) {
-    console.log('User.store no implementado')
-    //   const data = await request.validate(UserValidator)
-    //   const user = new User
-    //   user.merge(data)
-    //   await user.save()
-    session.flash({ error: Message.NOT_IMPLEMENTED })
+  public async store({ response, request, session }: HttpContextContract) {
+    const data = await request.validate(UserCreateValidator)
+    const user = new User
+    user.merge(data)
+    await user.save()
+    session.flash({ success: Message.SAVED })
     return response.redirect().toRoute('user.index')
   }
 

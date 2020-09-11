@@ -14,6 +14,11 @@
         {{flashMessages.get('auth.errors.uid')}}
       </small>
       @endif
+      @if(flashMessages.has('errors.uid'))
+      <small class="form-text text-muted">
+        {{flashMessages.get('errors.uid')}}
+      </small>
+      @endif
     </div>
     <div class="form-group">
       <label for="">Contraseña</label>
@@ -23,8 +28,14 @@
         {{flashMessages.get('auth.errors.password')}}
       </small>
       @endif
+      @if(flashMessages.has('errors.password'))
+      <small class="form-text text-muted">
+        {{flashMessages.get('errors.password')}}
+      </small>
+      @endif
     </div>
     <button class="btn btn-primary" type="submit">OK</button>
   </form>
 </div>
+
 @endsection

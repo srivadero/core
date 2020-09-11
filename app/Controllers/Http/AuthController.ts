@@ -1,43 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
-import { schema, rules } from '@ioc:Adonis/Core/Validator'
-
-class UserCreateValidator {
-  constructor(private ctx: HttpContextContract) {
-  }
-
-  public schema = schema.create({
-    username: schema.string({ trim: true }, [
-      rules.alpha(),
-      rules.maxLength(40),
-      rules.unique({ table: 'users', column: 'username' }),
-    ]),
-    email: schema.string({ trim: true }, [
-      rules.maxLength(100),
-      rules.email(),
-      rules.unique({ table: 'users', column: 'email' }),
-    ]),
-    password: schema.string({ trim: true }, [
-      rules.maxLength(100),
-      rules.confirmed(),
-    ]),
-  })
-
-  public cacheKey = this.ctx.routeKey
-
-  public messages = {
-    'username.required': 'No puede estar vacio',
-    'username.maxLength': 'Maximo 30 caracteres',
-    'username.unique': 'El nombre ya esta en uso',
-    'email.required': 'No puede estar vacio',
-    'email.maxLength': 'Maximo 100 caracteres',
-    'email.email': 'No es un mail valido',
-    'email.unique': 'El correo ya esta en uso',
-    'password.required': 'No puede estar vacio',
-    'password.maxLength': 'Maximo 100 caracteres',
-    'password.confirmed': 'La contraseña no coincide',
-  }
-}
+import AuthLoginValidator from 'App/Validators/AuthLoginValidator'
+import AuthRegisterValidator from 'App/Validators/AuthRegisterValidator'
 
 export default class AuthController {
   async registerForm({ view }: HttpContextContract) {
@@ -45,7 +9,7 @@ export default class AuthController {
   }
 
   async register({ auth, request, response }: HttpContextContract) {
-    const userDetails = await request.validate(UserCreateValidator)
+    const userDetails = await request.validate(AuthRegisterValidator)
     const user = new User()
     user.merge(userDetails)
     await user.save()
@@ -59,9 +23,8 @@ export default class AuthController {
   }
 
   async login({ auth, request, response }: HttpContextContract) {
-    const email = request.input('uid')
-    const password = request.input('password')
-    await auth.attempt(email, password)
+    const data = await request.validate(AuthLoginValidator)
+    await auth.attempt(data.uid, data.password)
 
     response.redirect('/')
   }
