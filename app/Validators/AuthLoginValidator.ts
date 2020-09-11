@@ -7,6 +7,7 @@ export default class AuthLoginValidator {
 
   public schema = schema.create({
     uid: schema.string({ trim: true }, [
+      rules.regex(/^[a-zA-Z0-9_]+$/),
       rules.maxLength(100),
       rules.email(),
     ]),

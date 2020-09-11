@@ -7,6 +7,7 @@ export default class AuthRegisterValidator {
 
   public schema = schema.create({
     username: schema.string({ trim: true }, [
+      rules.regex(/^[a-zA-Z0-9_]+$/),
       rules.maxLength(40),
       rules.unique({ table: 'users', column: 'username' }),
     ]),
