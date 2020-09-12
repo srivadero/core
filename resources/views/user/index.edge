@@ -6,6 +6,17 @@
   <a href="{{ route('user.create') }}" class="btn btn-sm btn-primary">Agregar</a>
 </div>
 
+<div class="ui">
+  <form class="form" method="get" action="">
+    <div class="input-group mb-3">
+      <input id="my-input" class="form-control" type="text" name="search" value="{{ search }}">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Buscar</button>
+      </div>
+    </div>
+  </form>
+</div>
+
 <table class="table table-sm">
   <thead>
     <tr>
@@ -32,6 +43,9 @@
 </table>
 
 @set('filter', '')
+@if(search)
+@set('filter', 'search='+ search +'&')
+@endif
 
 <nav aria-label="Pager">
   <ul class="pagination justify-content-center">
