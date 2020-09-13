@@ -2,9 +2,11 @@ import BaseSeeder from '@ioc:Adonis/Lucid/Seeder'
 import User from 'App/Models/User'
 import { DateTime } from 'luxon'
 import faker from 'faker'
+import _ from 'lodash'
 
 export default class MainSeeder extends BaseSeeder {
   public async run () {
+
     await User.truncate()
 
     await User.createMany([
@@ -16,9 +18,9 @@ export default class MainSeeder extends BaseSeeder {
 
     for (let i = 0; i < 50; i++) {
       const user = new User
-      user.username = faker.internet.userName()
-      user.email = faker.internet.exampleEmail(user.username)
-      user.password = faker.internet.password(8)
+      user.username = _.toLower(faker.internet.userName())
+      user.email =  _.toLower(faker.internet.exampleEmail(user.username))
+      user.password = _.toLower(faker.internet.password(8))
       user.active = faker.random.boolean()
       user.birth = DateTime.fromJSDate(faker.date.past(20))
       await user.save()

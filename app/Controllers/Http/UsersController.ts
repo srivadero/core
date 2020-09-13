@@ -12,12 +12,16 @@ enum Message {
 export default class UsersController {
 
   public async index({ request, view }: HttpContextContract) {
+    let { search } = request.all()
+    if(!search) search = ''
+
     const page = request.get().page || 1
     const pagination = await User.query()
+      .apply((scopes) => { scopes.usernameContains(search) })
       .orderBy('username', 'asc')
       .paginate(page, 10)
     const users = pagination.all()
-    return view.render('user/index', { users, pagination: pagination.getMeta() })
+    return view.render('user/index', { users, search, pagination: pagination.getMeta() })
   }
 
   public async create({ view }: HttpContextContract) {

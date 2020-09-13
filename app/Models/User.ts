@@ -4,6 +4,7 @@ import {
   column,
   beforeSave,
   BaseModel,
+  scope,
 } from '@ioc:Adonis/Lucid/Orm'
 
 export default class User extends BaseModel {
@@ -40,4 +41,11 @@ export default class User extends BaseModel {
       user.password = await Hash.make(user.password)
     }
   }
+
+  public static usernameContains = scope((query, text: string) => {
+    if(!text) return
+    query.orWhere('username', 'LIKE', '%' + text.trim() + '%')
+    query.orWhere('email', 'LIKE', '%' + text.trim() + '%')
+  })
+
 }

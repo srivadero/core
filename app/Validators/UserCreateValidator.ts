@@ -7,6 +7,7 @@ export default class UserCreateValidator {
 
   public schema = schema.create({
     username: schema.string({ trim: true }, [
+      rules.regex(/^[a-zA-Z0-9_]+$/),
       rules.maxLength(40),
       rules.unique({ table: 'users', column: 'username' }),
     ]),
@@ -22,5 +23,19 @@ export default class UserCreateValidator {
 
   public cacheKey = this.ctx.routeKey
 
-  public messages = {}
+  public messages = {
+    'username.required': 'No puede estar vacio',
+    'username.maxLength': 'Maximo 30 caracteres',
+    'username.unique': 'El nombre ya esta en uso',
+    'username.regex': 'Solo se permiten letras, numeros y guion bajo',
+    'email.required': 'No puede estar vacio',
+    'email.maxLength': 'Maximo 100 caracteres',
+    'email.email': 'No es un mail valido',
+    'email.unique': 'El correo ya esta en uso',
+    'password.required': 'No puede estar vacio',
+    'password.maxLength': 'Maximo 100 caracteres',
+    // 'password.confirmed': 'La contraseña no coincide',
+    // 'birth.format': 'Error en formato de fecha',
+    'date.format': 'Se espera formato dd/mm/aaaa',
+  }
 }
