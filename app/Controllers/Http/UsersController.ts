@@ -17,7 +17,7 @@ export default class UsersController {
 
     const page = request.get().page || 1
     const pagination = await User.query()
-      .where('username', 'LIKE', '%' + search + '%')
+      .apply((scopes) => { scopes.usernameContains(search) })
       .orderBy('username', 'asc')
       .paginate(page, 10)
     const users = pagination.all()

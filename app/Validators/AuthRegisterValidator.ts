@@ -28,6 +28,7 @@ export default class AuthRegisterValidator {
     'username.required': 'No puede estar vacio',
     'username.maxLength': 'Maximo 30 caracteres',
     'username.unique': 'El nombre ya esta en uso',
+    'username.regex': 'Solo se permiten letras, numeros y guion bajo',
     'email.required': 'No puede estar vacio',
     'email.maxLength': 'Maximo 100 caracteres',
     'email.email': 'No es un mail valido',
