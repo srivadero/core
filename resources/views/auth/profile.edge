@@ -8,6 +8,8 @@
     <dd>{{ user.username }}</dd>
     <dt>Correo</dt>
     <dd>{{ user.email }}</dd>
+    <dt>Fecha de nacimiento</dt>
+    <dd>{{ date(user.birth) || 'No especificada' }}</dd>
     <dt>Tipo de usuario</dt>
     <dd>{{ user.isAdmin ? 'Administrador' : 'Normal' }}</dd>
   </dl>

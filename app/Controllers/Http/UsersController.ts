@@ -30,7 +30,6 @@ export default class UsersController {
 
   public async store({ response, request, session }: HttpContextContract) {
     const data = await request.validate(UserCreateValidator)
-    console.log('FIX ERROR when username has only spaces')
     const user = new User
     user.merge(data)
     await user.save()
